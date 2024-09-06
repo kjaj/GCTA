@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH --partition=day
+#SBATCH --mem=80g
+#SBATCH -t 200:00
+#SBATCH --cpus-per-task=2
+#SBATCH -o gcta3.log
+
+gcta_path=/gpfs/gibbs/pi/huckins/software/gcta-1.94.1-linux-kernel-3-x86_64/
+
+for group in {SAS,AMR,EAS,EUR,AFR,white_british}
+do
+
+${gcta_path}gcta64 --grm UKB_${group}.flashpca --grm-cutoff 0.025 --make-grm --out UKB_${group}.flashpca_rm025
+
+
+
+done
