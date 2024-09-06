@@ -1,0 +1,26 @@
+for group in {SAS,AMR,EAS,EUR,AFR}
+do
+for trait in {N94_nonMenstrual_IP2,dyspareunia_IP2,any_N94_IP2,vulvodynia_IP2,vaginismus_IP2,IC_IP}
+
+do
+grep 'V(G)/Vp' ${group}_${trait}_gcta_out.hsq | grep -v L > ${group}_${trait}_final_h2
+
+done
+done
+
+####
+
+for group in {SAS,AMR,EAS,EUR,AFR}
+do
+for trait in {N94_nonMenstrual_IP2,dyspareunia_IP2,any_N94_IP2,vulvodynia_IP2,vaginismus_IP2,IC_IP}
+do
+
+awk '{a=FILENAME;}{print a"\t"$0}' ${group}_${trait}_final_h2 > ${group}_${trait}_final_h2.bk && mv ${group}_${trait}_final_h2.bk ${group}_${trait}_final_h2
+
+done
+done
+
+cat *final_h2 > all_final_h2
+
+rm *IP2_final_h2
+rm *IP_final_h2
