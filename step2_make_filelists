@@ -1,0 +1,25 @@
+# gcta expects file prefixees, so loop through and get those for the grms you made
+
+for group in {SAS,AMR,EAS,EUR,AFR}
+do
+ls UKB_${group}.gcta_chr*.bin | grep -v '.N' > ${group}_grm_chrs.txt
+done
+
+for group in {SAS,AMR,EAS,EUR,AFR}
+do
+
+while read line
+do
+IN=$line
+arrIN=(${IN//.grm.bin/ })
+echo ${arrIN[0]} >> ${group}_grm_chrs2.txt 
+done < ${group}_grm_chrs.txt
+done
+
+
+for group in {SAS,AMR,EAS,EUR,AFR}
+do
+rm ${group}_grm_chrs.txt
+cat ${group}_grm_chrs2.txt > ${group}_grm_chrs.txt
+rm ${group}_grm_chrs2.txt
+done
