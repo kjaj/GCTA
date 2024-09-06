@@ -1,0 +1,15 @@
+# pheno_path=/gpfs/gibbs/pi/huckins/kjj28/UKB_analyses/GWAS/saige_phenofiles/
+
+
+
+for group in {SAS,AMR,EAS,EUR,AFR,white_british}
+do
+for trait in {N94_nonMenstrual_IP2,dyspareunia_IP2,any_N94_IP2,vulvodynia_IP2,vaginismus_IP2,IC_IP}
+do
+phenocol=$(head -1 ${pheno_path}${group}_phenoFile | grep -o ${trait} | cut -f1) 
+
+
+awk -vcol2=$phenocol -vcol1="FID" 'NR==1{for(i=1;i<=NF;i++){if($i==col1)c1=i; if ($i==col2)c2=i;}} NR>0{print $c1 " " $c2}' ${pheno_path}${group}_phenoFile | awk '{print $1"\t"$1"\t"$2}' > ${group}_${trait}_gcta.phen
+
+done
+done
