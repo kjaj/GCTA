@@ -1,0 +1,23 @@
+# prior to this - need to make a file per phenotype that JUST contains a population prevalence value (referred to below - ${trait}_prevalence)
+
+gcta_path=/gpfs/gibbs/pi/huckins/software/gcta-1.94.1-linux-kernel-3-x86_64/
+
+for group in {SAS,AMR,EAS,EUR,AFR,white_british}
+do
+for trait in {N94_nonMenstrual_IP2,dyspareunia_IP2,any_N94_IP2,vulvodynia_IP2,vaginismus_IP2,IC_IP}
+
+do 
+
+n1=$(cat ${trait}_prevalence)
+
+echo '#!/bin/bash
+#SBATCH --partition=day
+#SBATCH --mem=80g
+#SBATCH -t 200:00
+#SBATCH --cpus-per-task=2
+#SBATCH -o gcta3.log
+
+'${gcta_path}'gcta64 --grm UKB_'${group}'.flashpca_rm025 --pheno '${group}'_'${trait}'_gcta.phen --reml --prevalence '${n1}' --out '${group}'_'${trait}'_gcta_out --thread-num 10' > ${group}_${trait}_gcta_final.sh
+
+done
+done
